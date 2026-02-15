@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILHM UPLOAD | Brutalist File System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="css/upload.css">
+</head>
+<body class="p-6 md:p-16 lg:p-24">
+
+    <div class="bg-pattern"></div>
+    <div class="liquid-orb"></div>
+
+    <div class="fixed top-5 right-5 z-50 flex items-center gap-4 bg-black border-2 border-white p-2 px-4">
+        <span class="text-[9px] font-black uppercase tracking-widest">Mainframe_Color</span>
+        <input type="color" value="#00ff66" oninput="updateTheme(this.value)" class="w-6 h-6 border-none bg-transparent cursor-pointer">
+    </div>
+
+    <header class="mb-12 md:mb-24">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-2 h-2 bg-[var(--primary)] animate-pulse"></div>
+            <span class="opacity-50 text-[10px] font-bold uppercase tracking-[0.4em]">Node_Protocol_Active</span>
+        </div>
+        <h1 class="font-huge text-5xl md:text-8xl lg:text-9xl uppercase">
+            ILHM<br><span id="dynamicStroke" style="color: transparent; -webkit-text-stroke: 1.5px #fff;">Uploader.</span>
+        </h1>
+    </header>
+
+    <main class="max-w-6xl">
+        <div id="inputSection" class="brutal-card p-2 mb-16 flex flex-col md:flex-row gap-2">
+            <div class="flex-1 drop-zone p-10 text-center" id="dropZone">
+                <input type="file" id="fileInput" class="hidden">
+                <div id="uploadPrompt">
+                    <i class="fa-solid fa-folder-open text-3xl mb-4 text-[var(--primary)]"></i>
+                    <p class="font-bold uppercase tracking-widest text-xs">Inject_File_Here</p>
+                </div>
+                <div id="fileInfo" class="hidden text-left flex items-center gap-6">
+                    <div id="previewMini" class="w-16 h-16 bg-white/5 border-2 border-white flex items-center justify-center font-black italic">?</div>
+                    <div>
+                        <p id="fileName" class="text-xs font-black truncate max-w-[200px] uppercase"></p>
+                        <p id="fileSize" class="text-[10px] opacity-40 font-bold"></p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="uploadFile()" id="btnGo" class="btn-execute py-8 md:py-0 px-12 disabled:opacity-30 text-sm" disabled>Start_Sequence_</button>
+        </div>
+
+        <div id="loading" class="hidden flex flex-col items-center py-12 space-y-8">
+            <div class="relative w-20 h-20">
+                <div class="absolute inset-0 border-4 border-[var(--primary)] opacity-10 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-t-transparent border-[var(--primary)] rounded-full animate-spin"></div>
+                <div class="absolute inset-4 border-2 border-b-transparent border-white rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-[var(--primary)] font-black italic uppercase tracking-widest mb-2 animate-pulse">Uploading_Data...</p>
+                <div class="w-64 h-[60px] bg-white/5 border border-white/10 p-3 overflow-hidden relative">
+                    <div class="font-mono text-[8px] uppercase leading-relaxed opacity-60 animate-[slideUp_5s_linear_infinite]">
+                        <p>> Handshaking with ilhm.my.id</p>
+                        <p>> Port 443 / SSL_ENCRYPTED</p>
+                        <p>> Chunking binary_data...</p>
+                        <p>> Transporting packets...</p>
+                        <p>> Waiting for server_ack</p>
+                        <p>> Syncing node_011</p>
+                        <p>> Upload_in_progress...</p>
+                    </div>
+                    <div class="absolute inset-0 terminal-overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="result" class="hidden animate-[fadeIn_0.5s_ease-out]">
+            <div class="brutal-card p-6 md:p-12 border-[var(--primary)]">
+                <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-12">
+                    <div>
+                        <span class="bg-[var(--primary)] text-black px-2 py-1 text-[10px] font-black uppercase mb-4 inline-block italic">Success_Push_Confirmed</span>
+                        <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">Access_Granted</h2>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] opacity-40 uppercase font-bold">Server_Response</p>
+                        <p id="resId" class="font-black text-xl italic text-[var(--primary)]">#---</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <div class="group">
+                            <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-2 block">Permanent_Link</label>
+                            <div class="flex bg-white/5 border-2 border-white/20 p-1 group-hover:border-[var(--primary)] transition-all">
+                                <input type="text" id="rawUrl" readonly class="bg-transparent border-none w-full p-3 font-mono text-xs focus:outline-none">
+                                <button id="btnCopy" onclick="copyToClipboard()" class="bg-white text-black px-6 font-black text-[10px] uppercase hover:bg-[var(--primary)] transition-all active:scale-90">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-end space-y-4">
+                        <div class="flex justify-between border-b border-white/10 pb-4 text-[10px] uppercase font-bold">
+                            <span class="opacity-40 italic">Mime_Type</span>
+                            <span id="resMime" class="text-[var(--primary)]"></span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-4 text-[10px] uppercase font-bold">
+                            <span class="opacity-40 italic">Final_Weight</span>
+                            <span id="resSize"></span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 pt-4">
+                            <a id="btnView" href="#" target="_blank" class="bg-white text-black py-4 text-center font-black text-[10px] uppercase hover:bg-[var(--primary)] transition-all">
+                                View_File_
+                            </a>
+                            <button onclick="location.reload()" class="border-2 border-white py-4 font-black text-[10px] uppercase hover:bg-white hover:text-black transition-all">
+                                Restart_System
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-32 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between gap-4 opacity-30 text-[9px] font-black uppercase tracking-widest">
+        <p>ILHM_CORP // NEURAL_INFRASTRUCTURE</p>
+        <p>© 2026 // ALL_RIGHTS_RESERVED</p>
+    </footer>
+
+    <script src="/script/upload.js"></script>
+</body>
+</html>
